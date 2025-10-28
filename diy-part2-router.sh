@@ -97,10 +97,6 @@ config_package_add coremark
 # autocore + lm-sensors-detect： cpu 频率、温度
 config_package_add autocore
 config_package_add lm-sensors-detect
-# nano 替代 vim
-config_package_add nano
-# upnp
-config_package_add luci-app-upnp
 # python3
 #config_package_add python3
 #config_package_add python3-base
@@ -114,14 +110,6 @@ config_package_add luci-app-vlmcsd
 # usb 2.0 3.0 支持
 config_package_add kmod-usb2
 config_package_add kmod-usb3
-# usb 网络支持
-config_package_add usbmuxd
-config_package_add usbutils
-config_package_add usb-modeswitch
-config_package_add kmod-usb-serial
-config_package_add kmod-usb-serial-option
-config_package_add kmod-usb-net-rndis
-config_package_add kmod-usb-net-ipheth
 
 # 第三方软件包
 mkdir -p package/custom
@@ -158,9 +146,6 @@ config_package_add luci-app-modemband
 config_package_add luci-app-3ginfo-lite
 ### luci-app-sms-tool-js
 config_package_add luci-app-sms-tool-js
-## luci-app-easytier
-config_package_add luci-app-easytier
-config_package_add easytier
 
 # 镜像生成
 # 修改分区大小
