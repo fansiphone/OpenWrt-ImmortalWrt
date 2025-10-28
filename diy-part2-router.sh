@@ -137,15 +137,6 @@ config_package_add luci-lib-ipkg
 config_package_add luci-app-partexp
 ## iStore 应用市场
 config_package_add luci-app-store
-## 4G/5G 支持：FM350-GL USB RNDIS
-### Siriling/5G-Modem-Support
-config_package_add luci-app-modem
-### luci-app-modemband
-config_package_add luci-app-modemband
-### luci-app-3ginfo-lite
-config_package_add luci-app-3ginfo-lite
-### luci-app-sms-tool-js
-config_package_add luci-app-sms-tool-js
 
 # 镜像生成
 # 修改分区大小
