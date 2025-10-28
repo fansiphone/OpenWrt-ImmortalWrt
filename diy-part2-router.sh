@@ -105,8 +105,6 @@ config_package_add lm-sensors-detect
 config_package_add luci-app-ttyd
 # docker
 config_package_add luci-app-dockerman
-# kms
-config_package_add luci-app-vlmcsd
 # usb 2.0 3.0 支持
 config_package_add kmod-usb2
 config_package_add kmod-usb3
