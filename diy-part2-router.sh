@@ -148,3 +148,62 @@ sed -i "s/CONFIG_GRUB_TIMEOUT=\"3\"/CONFIG_GRUB_TIMEOUT=\"1\"/" .config
 config_del TARGET_ROOTFS_EXT4FS
 ## 不生成非 EFI 镜像
 config_del GRUB_IMAGES
+
+# 创建首次启动时运行的网络配置脚本
+mkdir -p files/etc/uci-defaults
+cat > files/etc/uci-defaults/99-custom-network << 'EOF'
+#!/bin/sh
+
+# 根据网卡数量配置网络
+count=0
+for iface in $(ls /sys/class/net | grep -v lo); do
+    # 检查是否有对应的设备，并且排除无线网卡
+    if [ -e /sys/class/net/$iface/device ] && [[ $iface == eth* || $iface == en* ]]; then
+        count=$((count + 1))
+    fi
+done
+
+if [ "$count" -eq 1 ]; then
+    # 单个网卡，设置为 DHCP 模式
+    uci set network.lan.proto='dhcp'
+    uci commit network
+elif [ "$count" -gt 1 ]; then
+    # 多个网卡，设置静态 IP、网关和 DNS
+    uci set network.lan.proto='static'
+    uci set network.lan.ipaddr='192.168.1.2'
+    uci set network.lan.netmask='255.255.255.0'
+    uci set network.lan.gateway='192.168.1.1'
+    uci set network.lan.dns='223.5.5.5'
+    uci commit network
+fi
+
+# 删除WAN6接口
+uci delete network.wan6 >/dev/null 2>&1
+
+# 禁用LAN/WAN的IPv6 DHCP服务
+uci set dhcp.lan.ra='disabled'
+uci set dhcp.lan.dhcpv6='disabled'
+uci set dhcp.lan.ndp='disabled'
+uci set dhcp.wan.ra='disabled'
+uci set dhcp.wan.dhcpv6='disabled'
+
+# 防火墙禁用IPv6规则
+uci set firewall.@defaults[0].disable_ipv6='1'
+
+# 禁止DNS解析IPv6记录
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+
+# 清除IPv6 ULA前缀
+uci delete network.globals.ula_prefix >/dev/null 2>&1
+
+# 应用所有配置更改
+uci commit network
+uci commit dhcp
+uci commit firewall
+
+# 标记此脚本已成功执行
+exit 0
+EOF
+
+# 给脚本添加执行权限
+chmod +x files/etc/uci-defaults/99-custom-network
