@@ -136,6 +136,8 @@ config_package_del luci-app-rclone_INCLUDE_rclone-webui
 config_package_del luci-app-rclone_INCLUDE_rclone-ng
 
 # 新增
+# Firmware
+config_package_add intel-microcode
 # luci
 config_package_add luci
 config_package_add default-settings-chn
@@ -146,16 +148,16 @@ config_package_add coremark
 # autocore + lm-sensors-detect： cpu 频率、温度
 config_package_add autocore
 config_package_add lm-sensors-detect
-# nano 替代 vim
-config_package_add nano
-# upnp
-config_package_add luci-app-upnp
-# autoreboot
-config_package_add luci-app-autoreboot
 # python3
 #config_package_add python3
 #config_package_add python3-base
 #config_package_add python3-pip
+# tty 终端
+config_package_add luci-app-ttyd
+# docker
+config_package_add luci-app-dockerman
+# kms
+config_package_add luci-app-vlmcsd
 
 # 第三方软件包
 mkdir -p package/custom
@@ -176,9 +178,6 @@ config_package_del luci-app-passwall_INCLUDE_Shadowsocks_Rust_Client
 config_package_del luci-app-passwall_INCLUDE_Shadowsocks_Rust_Server
 config_package_del luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Client
 config_package_del luci-app-passwall_INCLUDE_ShadowsocksR_Libev_Server
-## luci-app-easytier
-config_package_add luci-app-easytier
-config_package_add easytier
 
 # 镜像生成
 # 修改分区大小
